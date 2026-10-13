@@ -3,8 +3,6 @@ name: UnterHaustria Ergebnisautomatik
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "*/5 * * * *"
 
 permissions:
   contents: read
@@ -12,6 +10,7 @@ permissions:
 jobs:
   ergebnisse:
     runs-on: ubuntu-latest
+
     steps:
       - name: Repository laden
         uses: actions/checkout@v4
@@ -21,5 +20,8 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Testprogramm starten
+      - name: Bluesky Verbindung testen
+        env:
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
         run: python src/main.py
